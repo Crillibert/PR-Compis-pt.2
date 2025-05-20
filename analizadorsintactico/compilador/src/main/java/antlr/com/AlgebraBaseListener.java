@@ -1,3 +1,4 @@
+package antlr.com;
 // Generated from c:/Users/Gabriel/Documents/GitHub/PR-Compis-pt.2/analizadorsintactico/compilador/src/main/java/antlr/com/Algebra.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;

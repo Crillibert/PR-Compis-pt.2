@@ -1,19 +1,29 @@
+// Generated from Algebra.g4 by ANTLR 4.13.2
 package antlr.com;
-// Generated from com\antlr4\Algebra.g4 by ANTLR 4.9.3
-
-
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+import org.antlr.v4.runtime.FailedPredicateException;
+import org.antlr.v4.runtime.NoViableAltException;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.RuntimeMetaData;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.VocabularyImpl;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class AlgebraParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -33,7 +43,7 @@ public class AlgebraParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "';'", null, null, "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'>'", 
+			null, "';'", null, null, "'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'>'", 
 			"'<'", "'='", "'^'", "'=>'"
 		};
 	}
@@ -95,6 +105,7 @@ public class AlgebraParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ProgramaContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(AlgebraParser.EOF, 0); }
 		public List<EcuacionContext> ecuacion() {
@@ -124,7 +135,7 @@ public class AlgebraParser extends Parser {
 			setState(17);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VARIABLE) | (1L << NUMERO_REAL) | (1L << LPAREN) | (1L << MAS) | (1L << MENOS))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 220L) != 0)) {
 				{
 				{
 				setState(14);
@@ -152,6 +163,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EcuacionContext extends ParserRuleContext {
 		public List<ExpresionContext> expresion() {
 			return getRuleContexts(ExpresionContext.class);
@@ -198,6 +210,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpresionContext extends ParserRuleContext {
 		public ExpresionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -209,6 +222,7 @@ public class AlgebraParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AddSubExprContext extends ExpresionContext {
 		public List<ExpresionContext> expresion() {
 			return getRuleContexts(ExpresionContext.class);
@@ -225,6 +239,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AtomExprContext extends ExpresionContext {
 		public AtomContext atom() {
 			return getRuleContext(AtomContext.class,0);
@@ -244,6 +259,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PowExprContext extends ExpresionContext {
 		public List<ExpresionContext> expresion() {
 			return getRuleContexts(ExpresionContext.class);
@@ -259,6 +275,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MulDivExprContext extends ExpresionContext {
 		public List<ExpresionContext> expresion() {
 			return getRuleContexts(ExpresionContext.class);
@@ -275,6 +292,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExpresionContext {
 		public TerminalNode LPAREN() { return getToken(AlgebraParser.LPAREN, 0); }
 		public ExpresionContext expresion() {
@@ -443,6 +461,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AtomContext extends ParserRuleContext {
 		public AtomContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -454,6 +473,7 @@ public class AlgebraParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class VarAtomContext extends AtomContext {
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
@@ -465,6 +485,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class NumberAtomContext extends AtomContext {
 		public RealesContext reales() {
 			return getRuleContext(RealesContext.class,0);
@@ -515,6 +536,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class RealesContext extends ParserRuleContext {
 		public TerminalNode NUMERO_REAL() { return getToken(AlgebraParser.NUMERO_REAL, 0); }
 		public RealesContext(ParserRuleContext parent, int invokingState) {
@@ -549,6 +571,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableContext extends ParserRuleContext {
 		public TerminalNode VARIABLE() { return getToken(AlgebraParser.VARIABLE, 0); }
 		public VariableContext(ParserRuleContext parent, int invokingState) {
@@ -583,6 +606,7 @@ public class AlgebraParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class RelopContext extends ParserRuleContext {
 		public RelopContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -594,6 +618,7 @@ public class AlgebraParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class EqOpContext extends RelopContext {
 		public TerminalNode EQ() { return getToken(AlgebraParser.EQ, 0); }
 		public EqOpContext(RelopContext ctx) { copyFrom(ctx); }
@@ -603,6 +628,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AssignOpContext extends RelopContext {
 		public TerminalNode ASIGN() { return getToken(AlgebraParser.ASIGN, 0); }
 		public AssignOpContext(RelopContext ctx) { copyFrom(ctx); }
@@ -612,6 +638,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LtOpContext extends RelopContext {
 		public TerminalNode LT() { return getToken(AlgebraParser.LT, 0); }
 		public LtOpContext(RelopContext ctx) { copyFrom(ctx); }
@@ -621,6 +648,7 @@ public class AlgebraParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class GtOpContext extends RelopContext {
 		public TerminalNode GT() { return getToken(AlgebraParser.GT, 0); }
 		public GtOpContext(RelopContext ctx) { copyFrom(ctx); }
@@ -705,25 +733,49 @@ public class AlgebraParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21H\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\7\2\22\n\2\f\2\16\2\25"+
-		"\13\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4$\n\4\f\4"+
-		"\16\4\'\13\4\3\4\5\4*\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4\65\n"+
-		"\4\f\4\16\48\13\4\3\5\3\5\5\5<\n\5\3\6\3\6\3\7\3\7\3\b\3\b\3\b\3\b\5\b"+
-		"F\n\b\3\b\2\3\6\t\2\4\6\b\n\f\16\2\4\3\2\b\t\3\2\n\13\2J\2\23\3\2\2\2"+
-		"\4\31\3\2\2\2\6)\3\2\2\2\b;\3\2\2\2\n=\3\2\2\2\f?\3\2\2\2\16E\3\2\2\2"+
-		"\20\22\5\4\3\2\21\20\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2"+
-		"\24\26\3\2\2\2\25\23\3\2\2\2\26\27\7\3\2\2\27\30\7\2\2\3\30\3\3\2\2\2"+
-		"\31\32\5\6\4\2\32\33\5\16\b\2\33\34\5\6\4\2\34\5\3\2\2\2\35\36\b\4\1\2"+
-		"\36\37\7\6\2\2\37 \5\6\4\2 !\7\7\2\2!*\3\2\2\2\"$\t\2\2\2#\"\3\2\2\2$"+
-		"\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&(\3\2\2\2\'%\3\2\2\2(*\5\b\5\2)\35\3\2"+
-		"\2\2)%\3\2\2\2*\66\3\2\2\2+,\f\7\2\2,-\7\17\2\2-\65\5\6\4\b./\f\6\2\2"+
-		"/\60\t\3\2\2\60\65\5\6\4\7\61\62\f\5\2\2\62\63\t\2\2\2\63\65\5\6\4\6\64"+
-		"+\3\2\2\2\64.\3\2\2\2\64\61\3\2\2\2\658\3\2\2\2\66\64\3\2\2\2\66\67\3"+
-		"\2\2\2\67\7\3\2\2\28\66\3\2\2\29<\5\n\6\2:<\5\f\7\2;9\3\2\2\2;:\3\2\2"+
-		"\2<\t\3\2\2\2=>\7\5\2\2>\13\3\2\2\2?@\7\4\2\2@\r\3\2\2\2AF\7\16\2\2BF"+
-		"\7\f\2\2CF\7\r\2\2DF\7\20\2\2EA\3\2\2\2EB\3\2\2\2EC\3\2\2\2ED\3\2\2\2"+
-		"F\17\3\2\2\2\t\23%)\64\66;E";
+		"\u0004\u0001\u000fF\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
+		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0001\u0000\u0005\u0000\u0010"+
+		"\b\u0000\n\u0000\f\u0000\u0013\t\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0005\u0002\"\b\u0002"+
+		"\n\u0002\f\u0002%\t\u0002\u0001\u0002\u0003\u0002(\b\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0005\u00023\b\u0002\n\u0002\f\u00026\t\u0002"+
+		"\u0001\u0003\u0001\u0003\u0003\u0003:\b\u0003\u0001\u0004\u0001\u0004"+
+		"\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
+		"\u0003\u0006D\b\u0006\u0001\u0006\u0000\u0001\u0004\u0007\u0000\u0002"+
+		"\u0004\u0006\b\n\f\u0000\u0002\u0001\u0000\u0006\u0007\u0001\u0000\b\t"+
+		"H\u0000\u0011\u0001\u0000\u0000\u0000\u0002\u0017\u0001\u0000\u0000\u0000"+
+		"\u0004\'\u0001\u0000\u0000\u0000\u00069\u0001\u0000\u0000\u0000\b;\u0001"+
+		"\u0000\u0000\u0000\n=\u0001\u0000\u0000\u0000\fC\u0001\u0000\u0000\u0000"+
+		"\u000e\u0010\u0003\u0002\u0001\u0000\u000f\u000e\u0001\u0000\u0000\u0000"+
+		"\u0010\u0013\u0001\u0000\u0000\u0000\u0011\u000f\u0001\u0000\u0000\u0000"+
+		"\u0011\u0012\u0001\u0000\u0000\u0000\u0012\u0014\u0001\u0000\u0000\u0000"+
+		"\u0013\u0011\u0001\u0000\u0000\u0000\u0014\u0015\u0005\u0001\u0000\u0000"+
+		"\u0015\u0016\u0005\u0000\u0000\u0001\u0016\u0001\u0001\u0000\u0000\u0000"+
+		"\u0017\u0018\u0003\u0004\u0002\u0000\u0018\u0019\u0003\f\u0006\u0000\u0019"+
+		"\u001a\u0003\u0004\u0002\u0000\u001a\u0003\u0001\u0000\u0000\u0000\u001b"+
+		"\u001c\u0006\u0002\uffff\uffff\u0000\u001c\u001d\u0005\u0004\u0000\u0000"+
+		"\u001d\u001e\u0003\u0004\u0002\u0000\u001e\u001f\u0005\u0005\u0000\u0000"+
+		"\u001f(\u0001\u0000\u0000\u0000 \"\u0007\u0000\u0000\u0000! \u0001\u0000"+
+		"\u0000\u0000\"%\u0001\u0000\u0000\u0000#!\u0001\u0000\u0000\u0000#$\u0001"+
+		"\u0000\u0000\u0000$&\u0001\u0000\u0000\u0000%#\u0001\u0000\u0000\u0000"+
+		"&(\u0003\u0006\u0003\u0000\'\u001b\u0001\u0000\u0000\u0000\'#\u0001\u0000"+
+		"\u0000\u0000(4\u0001\u0000\u0000\u0000)*\n\u0005\u0000\u0000*+\u0005\r"+
+		"\u0000\u0000+3\u0003\u0004\u0002\u0006,-\n\u0004\u0000\u0000-.\u0007\u0001"+
+		"\u0000\u0000.3\u0003\u0004\u0002\u0005/0\n\u0003\u0000\u000001\u0007\u0000"+
+		"\u0000\u000013\u0003\u0004\u0002\u00042)\u0001\u0000\u0000\u00002,\u0001"+
+		"\u0000\u0000\u00002/\u0001\u0000\u0000\u000036\u0001\u0000\u0000\u0000"+
+		"42\u0001\u0000\u0000\u000045\u0001\u0000\u0000\u00005\u0005\u0001\u0000"+
+		"\u0000\u000064\u0001\u0000\u0000\u00007:\u0003\b\u0004\u00008:\u0003\n"+
+		"\u0005\u000097\u0001\u0000\u0000\u000098\u0001\u0000\u0000\u0000:\u0007"+
+		"\u0001\u0000\u0000\u0000;<\u0005\u0003\u0000\u0000<\t\u0001\u0000\u0000"+
+		"\u0000=>\u0005\u0002\u0000\u0000>\u000b\u0001\u0000\u0000\u0000?D\u0005"+
+		"\f\u0000\u0000@D\u0005\n\u0000\u0000AD\u0005\u000b\u0000\u0000BD\u0005"+
+		"\u000e\u0000\u0000C?\u0001\u0000\u0000\u0000C@\u0001\u0000\u0000\u0000"+
+		"CA\u0001\u0000\u0000\u0000CB\u0001\u0000\u0000\u0000D\r\u0001\u0000\u0000"+
+		"\u0000\u0007\u0011#\'249C";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,4 +1,5 @@
 package antlr.com;
+
 // Generated from Algebra.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

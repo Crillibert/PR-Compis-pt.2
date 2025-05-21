@@ -104,7 +104,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>com.antlr4.ProcompisSintacticoApplication</mainClass>
+          <mainClass>antlr.com.App</mainClass>
           <excludes>
             <exclude>
               <groupId>org.projectlombok</groupId>

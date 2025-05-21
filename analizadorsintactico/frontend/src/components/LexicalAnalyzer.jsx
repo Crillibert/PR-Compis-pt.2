@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "../index.css";
 
 const LexicAnalyzer = () => {
-  const [input, setInput] = React.useState("");
-  const [tokens, setTokens] = React.useState([]);
-  const [fileName, setFileName] = React.useState("Ningún archivo seleccionado");
+  const [input, setInput] = useState("");
+  const [resultado, setResultado] = useState({ tokens: [], arbol: "" });
+  const [fileName, setFileName] = useState("Ningún archivo seleccionado");
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -19,16 +19,27 @@ const LexicAnalyzer = () => {
     }
   };
 
-  const analyze = () => {
-    const tokenized = input.split(/\s+/).filter(token => token.length > 0);
-    setTokens(tokenized);
+  const analyze = async () => {
+    try {
+      const response = await fetch("http://localhost:8081/api/analizar", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: input,
+      });
+      const data = await response.json();
+      setResultado({
+        tokens: data.tokens, 
+        arbol: data.arbol,
+      });
+    } catch (error) {
+      console.error("Error al analizar:", error);
+    }
   };
 
   return (
     <div className="analyzer-container">
-      <h1>Analizador Léxico</h1>
+      <h1>Analizador Léxico y Sintáctico</h1>
       
-      {/* Sección de selección de archivos */}
       <div className="file-selector">
         <input
           type="file"
@@ -37,32 +48,26 @@ const LexicAnalyzer = () => {
           accept=".txt"
           style={{ display: 'none' }}
         />
-        <button 
-          className="file-button"
-          onClick={() => fileInputRef.current.click()}
-        >
+        <button onClick={() => fileInputRef.current.click()}>
           Seleccionar archivo
         </button>
-        <span className="file-name">{fileName}</span>
+        <span>{fileName}</span>
       </div>
 
       <textarea
-        className="code-input"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Escribe tu código aquí..."
       />
       
-      <button className="analyze-button" onClick={analyze}>
-        Analizar
-      </button>
+      <button onClick={analyze}>Analizar</button>
       
-      <div className="tokens-list">
-        {tokens.map((token, index) => (
-          <div key={index} className="token">
-            {token}
-          </div>
-        ))}
+      <div className="results">
+        <h2>Tokens:</h2>
+        <pre>{resultado.tokens}</pre>
+        
+        <h2>Árbol Sintáctico:</h2>
+        <pre>{resultado.arbol}</pre>
       </div>
     </div>
   );

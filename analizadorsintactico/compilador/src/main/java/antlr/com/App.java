@@ -1,100 +1,152 @@
 package antlr.com;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+import java.io.*;
+import java.util.List;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-/**
- * Punto de entrada principal del compilador/analizador sintáctico
- */
-public final class App {
-    private App() {
+@SpringBootApplication
+public class App {
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
+        runConsoleMode(args);
     }
 
-    /**
-     * Método principal que inicia el análisis del código fuente.
-     * @param args Argumentos del programa. Puede recibir la ruta de un archivo a analizar.
-     */
-    public static void main(String[] args) {
+    // ==================== MODO CONSOLA (existente) ====================
+    private static void runConsoleMode(String[] args) {
         try {
-            if (args.length > 0) {
-                // Analizar archivo proporcionado como argumento
-                analyzeFile(args[0]);
-            } else {
-                // Modo interactivo
-                System.out.println("Modo interactivo. Escribe expresiones para analizar (Ctrl+D para salir):");
-                interactiveMode();
+            if (args.length > 0 && args[0].equals("--console")) {
+                System.out.println("Modo consola activado");
+                if (args.length > 1) {
+                    analyzeFile(args[1]);
+                } else {
+                    interactiveMode();
+                }
             }
-        } catch (IOException e) {
-            System.err.println("Error al leer el archivo: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Error durante el análisis: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error en modo consola:");
+            e.printStackTrace(); // Nuevo: Stack trace detallado
         }
     }
 
-    /**
-     * Analiza un archivo de entrada
-     * @param filePath Ruta del archivo a analizar
-     * @throws IOException Si hay error al leer el archivo
-     */
     private static void analyzeFile(String filePath) throws IOException {
-        // Configurar el analizador léxico
-        CharStream input = CharStreams.fromFileName(filePath);
-        AlgebraLexer lexer = new AlgebraLexer(input);
-        
-        // Crear tokens
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        
-        // Configurar el analizador sintáctico
-        AlgebraParser parser = new AlgebraParser(tokens);
-        
-        // Iniciar el análisis desde la regla inicial (ajusta según tu gramática)
-        ParseTree tree = parser.programa(); 
-        
-        // Imprimir el árbol de análisis sintáctico
-        System.out.println(tree.toStringTree(parser));
-        
-        // Aquí podrías agregar visitantes o listeners para procesar el árbol
+        try {
+            CharStream input = CharStreams.fromFileName(filePath);
+            AlgebraLexer lexer = configureLexer(new AlgebraLexer(input));
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            AlgebraParser parser = configureParser(new AlgebraParser(tokens));
+            
+            ParseTree tree = parser.programa(); 
+            System.out.println("Árbol sintáctico:\n" + tree.toStringTree(parser));
+        } catch (AnalysisException e) {
+            System.err.println("Error en análisis:");
+            e.printStackTrace(); // Nuevo: Stack trace detallado
+        }
     }
 
-    /**
-     * Modo interactivo para analizar expresiones ingresadas por consola
-     * @throws IOException Si hay error al leer la entrada
-     */
     private static void interactiveMode() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Modo interactivo. Escribe una expresión y presiona Enter:");
-        System.out.println("Ejemplo: x = 2+3;");
-        System.out.println("Escribe 'salir' para terminar.");
+        System.out.println("Modo interactivo. Escribe expresiones (o 'salir'):");
 
         while (true) {
+            System.out.print("> ");
+            String input = reader.readLine();
+            if (input == null || input.equalsIgnoreCase("salir")) break;
+            
             try {
-                System.out.print("> ");
-                String input = reader.readLine();
-                if (input == null || input.equalsIgnoreCase("salir")) break;
-                
-                // Procesar la entrada
-                CharStream stream = CharStreams.fromString(input);
-                AlgebraLexer lexer = new AlgebraLexer(stream);
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-                AlgebraParser parser = new AlgebraParser(tokens);
-
-                // Mostrar tokens (opcional, para depuración)
-                tokens.fill();
-                System.out.println("Tokens: " + tokens.getTokens());
-                
-                // Parsear y mostrar árbol
-                ParseTree tree = parser.programa();
-                System.out.println("Árbol sintáctico:");
-                System.out.println(tree.toStringTree(parser));
-                
+                AnalysisResult result = analyzeInput(input); // Reutiliza el nuevo método
+                System.out.println("Tokens: " + result.getTokens());
+                System.out.println("Árbol:\n" + result.getParseTree());
             } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
+                System.err.println("Error:");
+                e.printStackTrace(); // Nuevo: Stack trace detallado
             }
         }
+    }
+
+    // ==================== NUEVOS MÉTODOS PARA MANEJO DE ERRORES ====================
+    
+    /**
+     * Método público para análisis desde el Controller
+     */
+    public static AnalysisResult analyzeInput(String input) {
+        try {
+            CharStream stream = CharStreams.fromString(input);
+            AlgebraLexer lexer = configureLexer(new AlgebraLexer(stream));
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            AlgebraParser parser = configureParser(new AlgebraParser(tokens));
+            
+            // Análisis léxico
+            tokens.fill();
+            
+            // Análisis sintáctico
+            ParseTree tree = parser.programa();
+            
+            return new AnalysisResult(
+                tokens.getTokens(),
+                tree.toStringTree(parser),
+                null
+            );
+        } catch (AnalysisException e) {
+            return new AnalysisResult(null, null, e.getMessage());
+        }
+    }
+
+    // Configuración común del lexer
+    private static AlgebraLexer configureLexer(AlgebraLexer lexer) {
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(new ThrowingErrorListener());
+        return lexer;
+    }
+
+    // Configuración común del parser
+    private static AlgebraParser configureParser(AlgebraParser parser) {
+        parser.removeErrorListeners();
+        parser.addErrorListener(new ThrowingErrorListener());
+        return parser;
+    }
+
+    // ==================== CLASES AUXILIARES ====================
+    
+    // Manejador de errores mejorado
+    private static class ThrowingErrorListener extends BaseErrorListener {
+        @Override
+        public void syntaxError(Recognizer<?, ?> recognizer,
+                Object offendingSymbol,
+                int line,
+                int charPositionInLine,
+                String msg,
+                RecognitionException e) {
+            
+            String errorMsg = String.format("[Línea %d:%d] %s", line, charPositionInLine, msg);
+            throw new AnalysisException(errorMsg, e);
+        }
+    }
+
+    // Excepción personalizada
+    public static class AnalysisException extends RuntimeException {
+        public AnalysisException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    // Contenedor de resultados
+    public static class AnalysisResult {
+        private final List<Token> tokens; // Cambiado de List<? extends Token> a List<Token>
+        private final String parseTree;
+        private final String error;
+            
+        public AnalysisResult(List<Token> tokens, String parseTree, String error) {
+            this.tokens = tokens;
+            this.parseTree = parseTree;
+            this.error = error;
+        }
+        
+        // Getters
+        public List<Token> getTokens() { return tokens; }
+        public String getParseTree() { return parseTree; }
+        public String getError() { return error; }
     }
 }

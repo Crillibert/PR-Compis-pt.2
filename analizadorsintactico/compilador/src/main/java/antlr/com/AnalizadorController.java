@@ -1,47 +1,47 @@
 package antlr.com;
+
 import org.springframework.web.bind.annotation.*;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class AnalizadorController {
 
     @PostMapping("/analizar")
-    public AnalisisResultado analizar(@RequestBody String codigoFuente) {
-        try {
-            
-            CharStream input = CharStreams.fromString(codigoFuente);
-            AlgebraLexer lexer = new AlgebraLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            AlgebraParser parser = new AlgebraParser(tokens);
-
-            // Obtener tokens
-            tokens.fill();
-            String listaTokens = tokens.getTokens().toString();
-
-            // Obtener árbol sintáctico
-            ParseTree tree = parser.programa();
-            String arbolSintactico = tree.toStringTree(parser);
-
-            return new AnalisisResultado(listaTokens, arbolSintactico);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al analizar: " + e.getMessage());
+    public Map<String, Object> analizar(@RequestBody Map<String, String> request) {
+        String codigo = request.get("codigoFuente");
+        App.AnalysisResult result = App.analyzeInput(codigo);
+        
+        if (result.getError() != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", result.getError());
+            return response;
         }
+
+        // Procesamiento de tokens
+        List<Map<String, String>> tokenList = new ArrayList<>();
+        for (Token token : result.getTokens()) {
+            if (token.getType() != Token.EOF) {
+                tokenList.add(createTokenInfo(token));
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("tokens", tokenList);
+        response.put("arbol", result.getParseTree());
+        response.put("status", "success");
+        return response;
     }
 
-    // Clase para la respuesta JSON
-    static class AnalisisResultado {
-        private String tokens;
-        private String arbol;
-
-        public AnalisisResultado(String tokens, String arbol) {
-            this.tokens = tokens;
-            this.arbol = arbol;
-        }
-
-        // Getters (necesarios para la serialización JSON)
-        public String getTokens() { return tokens; }
-        public String getArbol() { return arbol; }
+    private Map<String, String> createTokenInfo(Token token) {
+        Map<String, String> tokenInfo = new HashMap<>();
+        tokenInfo.put("type", AlgebraLexer.VOCABULARY.getDisplayName(token.getType()));
+        tokenInfo.put("text", token.getText());
+        tokenInfo.put("line", String.valueOf(token.getLine()));
+        tokenInfo.put("column", String.valueOf(token.getCharPositionInLine()));
+        return tokenInfo;
     }
 }

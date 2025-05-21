@@ -1,4 +1,4 @@
-// Generated from Algebra.g4 by ANTLR 4.13.2
+// Generated from c:/Users/04dan/Dropbox/Mi PC (LAPTOP-35D3RKBD)/Desktop/URL/2025/COMPILADORES/PR-Compis-pt.2/analizadorsintactico/compilador/src/main/java/antlr/com/Algebra.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class AlgebraParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -105,11 +105,6 @@ public class AlgebraParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_programa; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitPrograma(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ProgramaContext programa() throws RecognitionException {
@@ -165,11 +160,6 @@ public class AlgebraParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ecuacion; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitEcuacion(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final EcuacionContext ecuacion() throws RecognitionException {
@@ -220,11 +210,6 @@ public class AlgebraParser extends Parser {
 		public TerminalNode MAS() { return getToken(AlgebraParser.MAS, 0); }
 		public TerminalNode MENOS() { return getToken(AlgebraParser.MENOS, 0); }
 		public AddSubExprContext(ExpresionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitAddSubExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AtomExprContext extends ExpresionContext {
@@ -240,11 +225,6 @@ public class AlgebraParser extends Parser {
 			return getToken(AlgebraParser.MENOS, i);
 		}
 		public AtomExprContext(ExpresionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitAtomExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class PowExprContext extends ExpresionContext {
@@ -256,11 +236,6 @@ public class AlgebraParser extends Parser {
 		}
 		public TerminalNode POW() { return getToken(AlgebraParser.POW, 0); }
 		public PowExprContext(ExpresionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitPowExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MulDivExprContext extends ExpresionContext {
@@ -273,11 +248,6 @@ public class AlgebraParser extends Parser {
 		public TerminalNode POR() { return getToken(AlgebraParser.POR, 0); }
 		public TerminalNode DIV() { return getToken(AlgebraParser.DIV, 0); }
 		public MulDivExprContext(ExpresionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitMulDivExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExpresionContext {
@@ -287,11 +257,6 @@ public class AlgebraParser extends Parser {
 		}
 		public TerminalNode RPAREN() { return getToken(AlgebraParser.RPAREN, 0); }
 		public ParenExprContext(ExpresionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitParenExpr(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ExpresionContext expresion() throws RecognitionException {
@@ -466,11 +431,6 @@ public class AlgebraParser extends Parser {
 			return getRuleContext(VariableContext.class,0);
 		}
 		public VarAtomContext(AtomContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitVarAtom(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NumberAtomContext extends AtomContext {
@@ -478,11 +438,6 @@ public class AlgebraParser extends Parser {
 			return getRuleContext(RealesContext.class,0);
 		}
 		public NumberAtomContext(AtomContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitNumberAtom(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final AtomContext atom() throws RecognitionException {
@@ -530,11 +485,6 @@ public class AlgebraParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_reales; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitReales(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final RealesContext reales() throws RecognitionException {
@@ -565,11 +515,6 @@ public class AlgebraParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variable; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitVariable(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final VariableContext variable() throws RecognitionException {
@@ -609,41 +554,21 @@ public class AlgebraParser extends Parser {
 	public static class EqOpContext extends RelopContext {
 		public TerminalNode EQ() { return getToken(AlgebraParser.EQ, 0); }
 		public EqOpContext(RelopContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitEqOp(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AssignOpContext extends RelopContext {
 		public TerminalNode ASIGN() { return getToken(AlgebraParser.ASIGN, 0); }
 		public AssignOpContext(RelopContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitAssignOp(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class LtOpContext extends RelopContext {
 		public TerminalNode LT() { return getToken(AlgebraParser.LT, 0); }
 		public LtOpContext(RelopContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitLtOp(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class GtOpContext extends RelopContext {
 		public TerminalNode GT() { return getToken(AlgebraParser.GT, 0); }
 		public GtOpContext(RelopContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AlgebraVisitor ) return ((AlgebraVisitor<? extends T>)visitor).visitGtOp(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final RelopContext relop() throws RecognitionException {

@@ -1,119 +1,171 @@
 // Generated from Algebra.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
+import java.util.HashMap;
+import java.util.Map;
 /**
  * This class provides an empty implementation of {@link AlgebraVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
- * @param <T> The return type of the visit operation. Use {@link Void} for
- * operations with no return type.
  */
 @SuppressWarnings("CheckReturnValue")
-public class AlgebraBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements AlgebraVisitor<T> {
+	public class AlgebraBaseVisitor extends AlgebraBaseVisitor<Double> {
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrograma(AlgebraParser.ProgramaContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEcuacion(AlgebraParser.EcuacionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitAddSubExpr(AlgebraParser.AddSubExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitAtomExpr(AlgebraParser.AtomExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitPowExpr(AlgebraParser.PowExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitMulDivExpr(AlgebraParser.MulDivExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitParenExpr(AlgebraParser.ParenExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitNumberAtom(AlgebraParser.NumberAtomContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitVarAtom(AlgebraParser.VarAtomContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitReales(AlgebraParser.RealesContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitVariable(AlgebraParser.VariableContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEqOp(AlgebraParser.EqOpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitGtOp(AlgebraParser.GtOpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitLtOp(AlgebraParser.LtOpContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitAssignOp(AlgebraParser.AssignOpContext ctx) { return visitChildren(ctx); }
+    // Mapa para almacenar las variables y sus valores
+    private Map<String, Double> memoria = new HashMap<>();
+
+    @Override
+    public Double visitPrograma(AlgebraParser.ProgramaContext ctx) {
+        Double resultado = null;
+        for (AlgebraParser.EcuacionContext ecuacion : ctx.ecuacion()) {
+            resultado = visit(ecuacion);
+        }
+        return resultado;
+    }
+
+    @Override
+    public Double visitEcuacion(AlgebraParser.EcuacionContext ctx) {
+        Double izquierda = visit(ctx.expresion(0));
+        Double derecha = visit(ctx.expresion(1));
+        
+        // Visitar el operador relacional
+        visit(ctx.relop());
+        
+        // Este método simplemente evalúa y devuelve el lado izquierdo
+        // El manejo real de la ecuación se hace en los métodos de los operadores relacionales
+        return izquierda;
+    }
+
+    @Override
+    public Double visitPowExpr(AlgebraParser.PowExprContext ctx) {
+        Double base = visit(ctx.expresion(0));
+        Double exponente = visit(ctx.expresion(1));
+        return Math.pow(base, exponente);
+    }
+
+    @Override
+    public Double visitMulDivExpr(AlgebraParser.MulDivExprContext ctx) {
+        Double izquierda = visit(ctx.expresion(0));
+        Double derecha = visit(ctx.expresion(1));
+        
+        if (ctx.POR() != null) {
+            return izquierda * derecha;
+        } else {
+            // Comprobar división por cero
+            if (derecha == 0) {
+                throw new ArithmeticException("División por cero");
+            }
+            return izquierda / derecha;
+        }
+    }
+
+    @Override
+    public Double visitAddSubExpr(AlgebraParser.AddSubExprContext ctx) {
+        Double izquierda = visit(ctx.expresion(0));
+        Double derecha = visit(ctx.expresion(1));
+        
+        if (ctx.MAS() != null) {
+            return izquierda + derecha;
+        } else {
+            return izquierda - derecha;
+        }
+    }
+
+    @Override
+    public Double visitParenExpr(AlgebraParser.ParenExprContext ctx) {
+        return visit(ctx.expresion());
+    }
+
+    @Override
+    public Double visitAtomExpr(AlgebraParser.AtomExprContext ctx) {
+        Double valor = visit(ctx.atom());
+        
+        // Aplicar operadores unarios (+ o -)
+        if (ctx.MENOS() != null) {
+            // Contar cuántos operadores MENOS hay
+            int cantidadMenos = ctx.MENOS().size();
+            // Si el número de MENOS es impar, cambiamos el signo
+            if (cantidadMenos % 2 != 0) {
+                valor = -valor;
+            }
+        }
+        
+        return valor;
+    }
+
+    @Override
+    public Double visitNumberAtom(AlgebraParser.NumberAtomContext ctx) {
+        return visit(ctx.reales());
+    }
+
+    @Override
+    public Double visitVarAtom(AlgebraParser.VarAtomContext ctx) {
+        String nombreVariable = ctx.variable().getText();
+        if (memoria.containsKey(nombreVariable)) {
+            return memoria.get(nombreVariable);
+        } else {
+            throw new RuntimeException("Variable no definida: " + nombreVariable);
+        }
+    }
+
+    @Override
+    public Double visitReales(AlgebraParser.RealesContext ctx) {
+        return Double.parseDouble(ctx.NUMERO_REAL().getText());
+    }
+
+    @Override
+    public Double visitVariable(AlgebraParser.VariableContext ctx) {
+        String nombreVariable = ctx.VARIABLE().getText();
+        return memoria.getOrDefault(nombreVariable, 0.0);
+    }
+
+    @Override
+    public Double visitEqOp(AlgebraParser.EqOpContext ctx) {
+        // Este método se llama cuando se procesa un operador de igualdad '='
+        // La lógica para manejar la igualdad se implementaría aquí
+        System.out.println("Operador de igualdad encontrado");
+        return 0.0;
+    }
+
+    @Override
+    public Double visitGtOp(AlgebraParser.GtOpContext ctx) {
+        // Este método se llama cuando se procesa un operador mayor que '>'
+        System.out.println("Operador mayor que encontrado");
+        return 0.0;
+    }
+
+    @Override
+    public Double visitLtOp(AlgebraParser.LtOpContext ctx) {
+        // Este método se llama cuando se procesa un operador menor que '<'
+        System.out.println("Operador menor que encontrado");
+        return 0.0;
+    }
+
+    @Override
+    public Double visitAssignOp(AlgebraParser.AssignOpContext ctx) {
+        // Este método se llama cuando se procesa un operador de asignación '=>'
+        // Aquí se implementaría la lógica para asignar valores a variables
+        AlgebraParser.EcuacionContext ecuacionCtx = (AlgebraParser.EcuacionContext) ctx.getParent();
+        
+        // Verificar que el lado izquierdo es una variable
+        if (ecuacionCtx.expresion(0) instanceof AlgebraParser.AtomExprContext) {
+            AlgebraParser.AtomExprContext atomExpr = (AlgebraParser.AtomExprContext) ecuacionCtx.expresion(0);
+            if (atomExpr.atom() instanceof AlgebraParser.VarAtomContext) {
+                String nombreVariable = atomExpr.atom().getText();
+                Double valor = visit(ecuacionCtx.expresion(1));
+                memoria.put(nombreVariable, valor);
+                System.out.println("Variable " + nombreVariable + " asignada con valor " + valor);
+                return valor;
+            }
+        }
+        
+        throw new RuntimeException("Error de asignación: el lado izquierdo debe ser una variable");
+    }
 }

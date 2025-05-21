@@ -21,3 +21,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# ANTLR/Maven generated files (agregado manualmente)
+compilador/target/
+**/*.class
+**/.antlr/
+**/*.tokens
+**/*.interp

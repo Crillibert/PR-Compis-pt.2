@@ -1,9 +1,13 @@
 import React, { useRef, useState } from "react";
-import "../index.css"; // Asegúrate de tener este archivo
+import "../index.css";
 
 const LexicalAnalyzer = () => {
   const [input, setInput] = useState("");
-  const [resultado, setResultado] = useState({ tokens: [], arbol: "" });
+  const [resultado, setResultado] = useState({ 
+    tokens: [], 
+    arbol: "", 
+    resultado: ""  // Nuevo estado para el resultado
+  });
   const [fileName, setFileName] = useState("Ningún archivo seleccionado");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -46,6 +50,7 @@ const LexicalAnalyzer = () => {
       setResultado({
         tokens: data.tokens || [],
         arbol: data.arbol || "No se generó árbol sintáctico",
+        resultado: data.resultado || "No se pudo calcular resultado"  // Nuevo campo
       });
 
     } catch (err) {
@@ -127,6 +132,13 @@ const LexicalAnalyzer = () => {
           <div className="tree-result">
             <h2>Árbol Sintáctico:</h2>
             <pre>{resultado.arbol}</pre>
+          </div>
+        )}
+
+        {resultado.resultado && (
+          <div className="result-section">
+            <h2>Resultado:</h2>
+            <div className="result-value">{resultado.resultado}</div>
           </div>
         )}
       </div>

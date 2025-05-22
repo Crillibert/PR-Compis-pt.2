@@ -9,12 +9,20 @@ import java.util.List;
 
 @SpringBootApplication
 public class App {
+    // Array de nombres de tokens para la serialización
+    public static String[] tokenNames;
+
+    static {
+        // Inicializar los nombres de tokens
+        tokenNames = AlgebraLexer.ruleNames;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
         runConsoleMode(args);
     }
 
-    // ==================== MODO CONSOLA (existente) ====================
+    // ==================== MODO CONSOLA ====================
     private static void runConsoleMode(String[] args) {
         try {
             if (args.length > 0 && args[0].equals("--console")) {
@@ -27,7 +35,7 @@ public class App {
             }
         } catch (Exception e) {
             System.err.println("Error en modo consola:");
-            e.printStackTrace(); // Nuevo: Stack trace detallado
+            e.printStackTrace();
         }
     }
 
@@ -39,10 +47,14 @@ public class App {
             AlgebraParser parser = configureParser(new AlgebraParser(tokens));
             
             ParseTree tree = parser.programa(); 
+            VisitOp visitor = new VisitOp();
+            Double resultado = visitor.visit(tree);
+            
             System.out.println("Árbol sintáctico:\n" + tree.toStringTree(parser));
+            System.out.println("Resultado: " + (resultado != null ? resultado.toString() : "N/A"));
         } catch (AnalysisException e) {
             System.err.println("Error en análisis:");
-            e.printStackTrace(); // Nuevo: Stack trace detallado
+            e.printStackTrace();
         }
     }
 
@@ -56,21 +68,18 @@ public class App {
             if (input == null || input.equalsIgnoreCase("salir")) break;
             
             try {
-                AnalysisResult result = analyzeInput(input); // Reutiliza el nuevo método
+                AnalysisResult result = analyzeInput(input);
                 System.out.println("Tokens: " + result.getTokens());
                 System.out.println("Árbol:\n" + result.getParseTree());
+                System.out.println("Resultado: " + (result.getResultado() != null ? result.getResultado() : "N/A"));
             } catch (Exception e) {
                 System.err.println("Error:");
-                e.printStackTrace(); // Nuevo: Stack trace detallado
+                e.printStackTrace();
             }
         }
     }
 
-    // ==================== NUEVOS MÉTODOS PARA MANEJO DE ERRORES ====================
-    
-    /**
-     * Método público para análisis desde el Controller
-     */
+    // ==================== MÉTODOS DE ANÁLISIS ====================
     public static AnalysisResult analyzeInput(String input) {
         try {
             CharStream stream = CharStreams.fromString(input);
@@ -84,24 +93,28 @@ public class App {
             // Análisis sintáctico
             ParseTree tree = parser.programa();
             
+            // Análisis semántico y cálculo
+            VisitOp visitor = new VisitOp();
+            Double resultado = visitor.visit(tree);
+            
             return new AnalysisResult(
                 tokens.getTokens(),
                 tree.toStringTree(parser),
+                resultado != null ? resultado.toString() : null,
                 null
             );
         } catch (AnalysisException e) {
-            return new AnalysisResult(null, null, e.getMessage());
+            return new AnalysisResult(null, null, null, e.getMessage());
         }
     }
 
-    // Configuración común del lexer
+    // ==================== CONFIGURACIONES ====================
     private static AlgebraLexer configureLexer(AlgebraLexer lexer) {
         lexer.removeErrorListeners();
         lexer.addErrorListener(new ThrowingErrorListener());
         return lexer;
     }
 
-    // Configuración común del parser
     private static AlgebraParser configureParser(AlgebraParser parser) {
         parser.removeErrorListeners();
         parser.addErrorListener(new ThrowingErrorListener());
@@ -109,8 +122,6 @@ public class App {
     }
 
     // ==================== CLASES AUXILIARES ====================
-    
-    // Manejador de errores mejorado
     private static class ThrowingErrorListener extends BaseErrorListener {
         @Override
         public void syntaxError(Recognizer<?, ?> recognizer,
@@ -125,28 +136,28 @@ public class App {
         }
     }
 
-    // Excepción personalizada
     public static class AnalysisException extends RuntimeException {
         public AnalysisException(String message, Throwable cause) {
             super(message, cause);
         }
     }
 
-    // Contenedor de resultados
     public static class AnalysisResult {
-        private final List<Token> tokens; // Cambiado de List<? extends Token> a List<Token>
+        private final List<Token> tokens;
         private final String parseTree;
+        private final String resultado;
         private final String error;
             
-        public AnalysisResult(List<Token> tokens, String parseTree, String error) {
+        public AnalysisResult(List<Token> tokens, String parseTree, String resultado, String error) {
             this.tokens = tokens;
             this.parseTree = parseTree;
+            this.resultado = resultado;
             this.error = error;
         }
         
-        // Getters
         public List<Token> getTokens() { return tokens; }
         public String getParseTree() { return parseTree; }
+        public String getResultado() { return resultado; }
         public String getError() { return error; }
     }
 }

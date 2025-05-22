@@ -1,7 +1,9 @@
 antlr\com\AlgebraBaseVisitor.class
 antlr\com\AlgebraParser$GtOpContext.class
 antlr\com\AlgebraBaseListener.class
+antlr\com\App$AnalysisResult.class
 antlr\com\AlgebraParser.class
+antlr\com\App$AnalysisException.class
 antlr\com\AlgebraParser$VarAtomContext.class
 antlr\com\AlgebraParser$AssignOpContext.class
 antlr\com\AlgebraParser$AddSubExprContext.class
@@ -18,6 +20,7 @@ antlr\com\AlgebraParser$PowExprContext.class
 antlr\com\AlgebraParser$ExpresionContext.class
 antlr\com\AlgebraParser$MulDivExprContext.class
 antlr\com\AlgebraParser$RelopContext.class
+antlr\com\App$ThrowingErrorListener.class
 antlr\com\AlgebraLexer.class
 antlr\com\AlgebraParser$NumberAtomContext.class
 antlr\com\AlgebraParser$VariableContext.class

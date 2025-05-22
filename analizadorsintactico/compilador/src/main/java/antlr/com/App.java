@@ -68,9 +68,9 @@ public final class App {
     private static void interactiveMode() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Modo interactivo. Escribe una expresión y presiona Enter:");
-        System.out.println("Ejemplo: x = 2+3;");
+        System.out.println("Ejemplo: x => 2+3;");
         System.out.println("Escribe 'salir' para terminar.");
-
+        VisitOp vistador = new VisitOp();
         while (true) {
             try {
                 System.out.print("> ");
@@ -89,6 +89,7 @@ public final class App {
                 
                 // Parsear y mostrar árbol
                 ParseTree tree = parser.programa();
+                vistador.visit(tree);
                 System.out.println("Árbol sintáctico:");
                 System.out.println(tree.toStringTree(parser));
                 
